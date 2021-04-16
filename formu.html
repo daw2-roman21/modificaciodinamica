@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formu</title>
+</head>
+<body>
+    <div class="section">
+        <form action="">
+            <label for="input">Introduce el texto:</label>
+            <input list="datos" type="text" name="input" id="input">
+            <datalist id="datos">
+                
+            </datalist>
+        </form>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+    document.getElementById('input').addEventListener("keyup",()=>{
+        document.getElementById('datos').innerHTML="";//limpio la lista
+        var mensaje = document.getElementById('input').value;
+        console.log(mensaje);
+        $.ajax({
+            method: 'POST',
+            url: 'back.php',
+            data: {mensaje: mensaje},
+        }).done((data)=>{
+            {
+                console.log(data);
+                var registros = data.split("/");
+                registros.pop();//elimino el ultimo que está en blanco
+                registros.forEach(registro => {
+                    var opciones = document.createElement("option");
+                    opciones.text = registro;
+                    document.getElementById('datos').appendChild(opciones);
+                })
+                
+
+            }
+        })
+    })
+</script>
+</html>
